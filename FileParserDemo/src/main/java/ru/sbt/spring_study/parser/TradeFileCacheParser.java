@@ -17,7 +17,7 @@ public class TradeFileCacheParser {
 
     public TradeFileCacheParser() {
         context = new ClassPathXmlApplicationContext("parser-config.xml");
-        tradeFileCache = (TradeFileCache)context.getBean("TradeFileCache");
+        tradeFileCache = (TradeFileCache)context.getBean(TradeFileCache.class);
     }
 
     public Collection<Trade> parseFile(String filePath){
