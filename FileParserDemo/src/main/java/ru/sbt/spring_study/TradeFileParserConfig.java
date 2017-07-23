@@ -4,29 +4,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.sbt.spring_study.cache.TradeFileCache;
 import ru.sbt.spring_study.parser.AssociatedFileExt;
-import ru.sbt.spring_study.parser.CSVTradeParser;
 import ru.sbt.spring_study.parser.TradeParser;
-import ru.sbt.spring_study.parser.XLSTradeParser;
-
-import java.io.File;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
-/**
- * Created by 1 on 23.07.2017.
- */
 public class TradeFileParserConfig {
     // мапа для хранения связки расширение файла - класс реализации парсера
-    private Map<String, Class<? extends TradeParser>> configFileExt = new HashMap<String, Class<? extends TradeParser>>();
-    private ApplicationContext context = new ClassPathXmlApplicationContext("parser-config.xml");
+    private final Map<String, Class<? extends TradeParser>> configFileExt = new HashMap<String, Class<? extends TradeParser>>();
+    private final ApplicationContext context;
 
-    public ApplicationContext getContext() {
-        return context;
-    }
-
-    public TradeFileParserConfig(){
+    public TradeFileParserConfig(String configLocation){
         // неудачное место для хранения таких связей.
         // наверное, это нужно делать как-то по-другому средствами Spring
         // или хотя бы хранить где-то в config файле
@@ -36,6 +23,7 @@ public class TradeFileParserConfig {
         //configFileExt.put("xls", XLSTradeParser.class);
 
         // вторая попытка - через аннотации к классам реализации парсера
+        context = new ClassPathXmlApplicationContext(configLocation);
         final Map<String, TradeParser> beansOfType = context.getBeansOfType(TradeParser.class);
         for (TradeParser tradeParser : beansOfType.values()) {
             AssociatedFileExt associatedFileExt = tradeParser.getClass().getAnnotation(AssociatedFileExt.class);
