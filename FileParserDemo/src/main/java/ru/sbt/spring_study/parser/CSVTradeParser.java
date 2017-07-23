@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@AssociatedFileExt(fileExt="csv")
 public class CSVTradeParser implements TradeParser {
     public Collection<Trade> parse(InputStream inputStream) {
         Collection<Trade> trades = new ArrayList<Trade>();

@@ -1,11 +1,8 @@
 package ru.sbt.spring_study.parser;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.sbt.spring_study.Trade;
 import ru.sbt.spring_study.TradeFileParserConfig;
 import ru.sbt.spring_study.cache.TradeFileCache;
-import ru.sbt.spring_study.cache.TradeFileCacheMap;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,11 +11,11 @@ import java.util.Collection;
 
 public class TradeFileCacheParser {
     private TradeFileCache tradeFileCache;
-    private ApplicationContext context = new ClassPathXmlApplicationContext("parser-config.xml");
-    private TradeFileParserConfig parserConfig = new TradeFileParserConfig();
+    private TradeFileParserConfig parserConfig;
 
-    public TradeFileCacheParser() {
-        tradeFileCache = (TradeFileCache)context.getBean(TradeFileCache.class);
+    public TradeFileCacheParser(TradeFileParserConfig parserConfig) {
+        this.parserConfig = parserConfig;
+        tradeFileCache = parserConfig.getTradeFileCache();
     }
 
     public Collection<Trade> parseFile(String filePath){
@@ -27,9 +24,10 @@ public class TradeFileCacheParser {
         // проверяем на наличие в кэше
         Collection<Trade> trades = tradeFileCache.find(file);
 
+        // если не нашли, то парсим и кладем в кэш
         if (trades == null) {
-            Class<? extends TradeParser> parserClass = parserConfig.getParser(filePath);
-            TradeParser tradeParser = context.getBean(parserClass);
+            // получили парсер, используя расширение файла
+            TradeParser tradeParser = parserConfig.getTradeParser(filePath);
 
             try {
                 trades = tradeParser.parse(new FileInputStream(filePath));
