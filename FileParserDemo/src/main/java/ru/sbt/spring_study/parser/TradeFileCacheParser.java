@@ -27,7 +27,14 @@ public class TradeFileCacheParser {
         Collection<Trade> trades = tradeFileCache.find(file);
 
         if (trades == null) {
-            TradeParser tradeParser = context.getBean(CSVTradeParser.class);
+            Class<? extends TradeParser> parserClass = null;
+            if (filePath.endsWith(".csv")){
+                parserClass = CSVTradeParser.class;
+            }
+            else if (filePath.endsWith(".xls")){
+                parserClass = XLSTradeParser.class;
+            }
+            TradeParser tradeParser = context.getBean(parserClass);
 
             try {
                 trades = tradeParser.parse(new FileInputStream(filePath));

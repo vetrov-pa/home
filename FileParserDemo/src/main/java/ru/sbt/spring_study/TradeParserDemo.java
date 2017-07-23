@@ -7,5 +7,6 @@ public class TradeParserDemo {
         TradeFileCacheParser parser = new TradeFileCacheParser();
         parser.parseFile("C:\\temp\\test.csv");
         parser.parseFile("C:\\temp\\test.csv");
+        parser.parseFile("C:\\temp\\test.xls");
     }
 }
