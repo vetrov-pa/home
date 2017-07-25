@@ -11,7 +11,5 @@ public class TradeFileParserDemo {
         parser.parseFile("C:\\temp\\test.csv");
         parser.parseFile("C:\\temp\\test.csv");
         parser.parseFile("C:\\temp\\test.xls");
-
-        System.out.println("end");
     }
 }

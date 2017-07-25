@@ -11,9 +11,9 @@ import java.util.Map;
  * Created by 1 on 25.07.2017.
  */
 public class TradeParserContainer {
-    private final Map<String, Class<?>> parsers;
+    private final Map<String, Class<? extends TradeParser>> parsers;
 
-    public TradeParserContainer(Map<String, Class<?>> parsers){
+    public TradeParserContainer(Map<String, Class<? extends TradeParser>> parsers){
         this.parsers = parsers;
     }
 
@@ -22,8 +22,8 @@ public class TradeParserContainer {
         if (filePath.lastIndexOf(".") != -1 && filePath.lastIndexOf(".") != 0)
             fileExt = filePath.substring(filePath.lastIndexOf(".") + 1);
 
-        Class<?> parserClass = parsers.get(fileExt);
+        Class<? extends TradeParser> parserClass = parsers.get(fileExt);
 
-        return (TradeParser) parserClass.newInstance();
+        return parserClass.newInstance();
     }
 }
