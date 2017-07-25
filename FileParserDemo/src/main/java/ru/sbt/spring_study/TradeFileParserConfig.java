@@ -27,15 +27,15 @@ public class TradeFileParserConfig {
     }
 
     @Bean
-    public TradeParserContainer getParserContainer(){
+    public TradeFileParserContainer getParsers(){
         Map<String, TradeParser> tradeParserBeans = context.getBeansOfType(TradeParser.class);
-        Map<String, Class<? extends TradeParser>> parsers = new HashMap<String, Class<? extends TradeParser>>();
+        TradeFileParserContainer parserContainer = new TradeFileParserContainer();
         for (TradeParser tradeParser : tradeParserBeans.values()) {
             ParserForFile parserForFile = tradeParser.getClass().getAnnotation(ParserForFile.class);
             if (parserForFile != null){
-                parsers.put(parserForFile.fileExt(), tradeParser.getClass());
+                parserContainer.put(parserForFile.fileExt(), tradeParser);
             }
         }
-        return new TradeParserContainer(parsers);
+        return parserContainer;
     }
 }
