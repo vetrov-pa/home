@@ -7,6 +7,6 @@ import java.lang.annotation.RetentionPolicy;
  * Created by 1 on 23.07.2017.
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AssociatedFileExt {
+public @interface ParserForFile {
     String fileExt();
 }
